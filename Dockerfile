@@ -15,7 +15,7 @@ WORKDIR /app
 
 COPY --from=builder /app/goapp .
 
-CMD ["./goapp"]
+CMD ["./cmd/main.go"]
 
 # Builds docker image
 # docker build -t goapp .
