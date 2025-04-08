@@ -3,8 +3,8 @@ package main
 import (
 	//"fmt"
 	//"net/http"
-    
-	"goapp/database"
+	"os"
+	"goapp/internal/database"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -25,10 +25,13 @@ func main() {
 	app := fiber.New()
 
 	app.Get("/", func(c *fiber.Ctx) error {
-		return c.SendString("Hello World!!, This is Go-Fiber")
+		return c.SendString("This is Go-Fiber API")
 	})
+	
+	dbConn := database.ConnectDB()
+	defer dbConn.Close()
 
-    database.ConnectDB()
+	port := os.Getenv("PORT")
 
-	app.Listen(":8080")
+	app.Listen(":" + port)
 }
