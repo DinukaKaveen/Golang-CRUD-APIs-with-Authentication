@@ -1,0 +1,12 @@
+version: "2"
+sql:
+  - engine: "mysql"
+    queries:
+      - "queries/author_query.sql"
+      - "queries/book_query.sql"
+    schema:
+      - "schema/schema.sql"
+    gen:
+      go:
+        package: "sqlc"
+        out: "sqlc"
