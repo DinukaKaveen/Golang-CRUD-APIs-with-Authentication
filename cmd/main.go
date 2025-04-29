@@ -5,6 +5,7 @@ import (
 	//"net/http"
 	"os"
 	"goapp/internal/database"
+	"goapp/routes"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -29,6 +30,7 @@ func main() {
 	})
 	
 	dbConn := database.ConnectDB()
+	routes.RouteSetup(app)
 	defer dbConn.Close()
 
 	port := os.Getenv("PORT")
