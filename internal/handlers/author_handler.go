@@ -39,7 +39,7 @@ func CreateAuthor(c *fiber.Ctx) error {
 	}
 
 	return c.Status(fiber.StatusCreated).JSON(fiber.Map{
-		"data:": newAuthor,
+		"data": newAuthor,
 		"message": "Successfully created the Author",
 	})
 }
@@ -138,13 +138,20 @@ func DeleteAuthor(c *fiber.Ctx) error {
 		})
 	}
 
-	err = queries.DeleteAuthor(c.Context(), int64(id))
+	_, err = queries.GetAuthor(c.Context(), int64(id))
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
 				"error": "Author not found",
 			})
 		}
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": "Failed to retrieve author",
+		})
+	}
+
+	err = queries.DeleteAuthor(c.Context(), int64(id))
+	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error": "Failed to delete author",
 		})
